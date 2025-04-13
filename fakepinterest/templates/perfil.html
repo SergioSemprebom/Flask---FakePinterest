@@ -1,0 +1,18 @@
+{% extends "homepage.html" %} <!--Extende o template base.html-->
+
+{% block titulo %} 
+Perfil - {{usuario}}
+{% endblock %} <!--Fim do bloco de título-->
+
+
+{% block body %} <!--Início do bloco de corpo-->
+<body>
+
+<h1>Perfil do usuário: {{usuario}} </h1> <!--Exibe o nome do usuário-->
+
+<a href="{{url_for ('homepage')}}">Sair</a> <!--Link para voltar à página inicial--> 
+
+</body>
+
+           
+{% endblock %} <!--Fim do bloco de corpo-->
