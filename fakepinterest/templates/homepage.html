@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>{% block title %}
+    <title>{% block titulo %}
         FakePinterest
     {% endblock %}</title>
 </head>
 
-
+{% block body %}
 <body>    
 <h1>FakePinterest - Meu primeiro site no ar</h1>
 
@@ -27,6 +27,8 @@
     {{ form.botao_confirmacao() }}
 
 </form>
-</body>
 
+</body>
+{% endblock %}
+{% endblock %}
 </html>

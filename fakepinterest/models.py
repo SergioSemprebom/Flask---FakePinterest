@@ -2,7 +2,7 @@
 from fakepinterest import database, login_manager # importa o banco de dados do arquivo fakepinterest
 from datetime import datetime # importa o datetime para usar na data de criação das fotos
 from flask_login import UserMixin # importa o UserMixin para usar na autenticação do usuário
-
+from flask_login import UserMixin
 
 @login_manager.user_loader # função que carrega o usuário
 def load_usuario(id_usuario): # função para carregar o usuário pelo id
@@ -10,7 +10,7 @@ def load_usuario(id_usuario): # função para carregar o usuário pelo id
 
 # cria a classe Usuario que herda de database.Model e UserMixin
 # UserMixin é uma classe que fornece métodos e atributos para autenticação de usuários
-class Usuario(database.Model):
+class Usuario(database.Model, UserMixin):
     id = database.Column(database.Integer, primary_key=True) # cria a coluna id, do tipo inteiro, e define como chave primária
     username = database.Column(database.String, nullable=False) # cria a coluna username, do tipo string, e define como não nula
     email = database.Column(database.String, nullable=False, unique=True) # cria a coluna email, do tipo string, e define como não nula e única

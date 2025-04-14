@@ -7,7 +7,7 @@ from flask_bcrypt import Bcrypt # importa o Bcrypt do flask_bcrypt
 app = Flask(__name__) # cria uma instância do Flask, __name__ é o nome do módulo atual
 # o Flask vai saber onde estão os arquivos estáticos, templates e etc.
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///comunidade.db' # configura o banco de dados, nesse caso, um sqlite
-app.config["SECRET_KEY"] = '152365874585jh4g5fr78yu542df96we' # chave secreta para proteger as sessões do Flask
+app.config["SECRET_KEY"] = '123456789boa_sorte12345674857254' # chave secreta para proteger as sessões do Flask
 
 
 database = SQLAlchemy(app) # cria uma instância do SQLAlchemy, passando o app como parâmetro
