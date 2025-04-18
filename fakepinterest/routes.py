@@ -44,7 +44,7 @@ def perfil(id_usuario):
            # se o usuário não existe
     else:
         usuario = Usuario.query.get(int(id_usuario))
-        return redirect("perfil.html", usuario=usuario) # redireciona para a página do perfil do usuário
+        return render_template("perfil.html", usuario=usuario) # redireciona para a página do perfil do usuário
     
 
 @app.route("/logout") # rota para fazer logout
