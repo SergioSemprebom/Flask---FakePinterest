@@ -1,6 +1,6 @@
 # criar os formularios no nosso site
 from flask_wtf import FlaskForm # importa o FlaskForm para criar os formulários
-from wtforms import StringField, PasswordField, SubmitField # importa os campos que vamos usar nos formulários
+from wtforms import StringField, PasswordField, SubmitField, FileField # importa os campos que vamos usar nos formulários
 from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError  # importa os validadores que vamos usar nos formulários
 from fakepinterest.models import Usuario # importa o modelo Usuario para validar o email e o username
 
@@ -23,3 +23,9 @@ class FormCriarConta(FlaskForm):
         usuario=Usuario.query.filter_by(email=email.data).first() # verifica se o email já existe no banco de dados
         if usuario:
             raise ValidationError("E-mail já cadastrado, faça login para continuar" ) # se o email já existe, lança um erro de validação com a mensagem "E-mail já cadastrado, faça login para continuar"
+        
+
+class FormFoto(FlaskForm):
+    foto=FileField("Foto", validators=[DataRequired()])
+    botao_confirmacao=SubmitField("Enviar")
+        

@@ -1,34 +1,38 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block titulo %}
         FakePinterest
-    {% endblock %}</title>
+        {% endblock %}</title>
 </head>
 
 {% block body %}
-<body>    
-<h1>FakePinterest - Meu primeiro site no ar</h1>
 
-<h2>Agora vamos continuar nosso site</h2>
+<body>
+    <h1>FakePinterest - Meu primeiro site no ar</h1>
 
-{% block formulario %}
-<form method='POST'> 
-{{ form.csrf_token }}
+    <h2>Agora vamos continuar nosso site</h2>
 
-    {{ form.email.label() }} 
-    {{ form.email() }}
+    {% block formulario %}
+    <form method='POST'>
+        {{ form.csrf_token }}
 
-    {{ form.senha.label() }} 
-    {{ form.senha() }}
+        {{ form.email.label() }}
+        {{ form.email() }}
 
-    {{ form.botao_confirmacao() }}
+        {{ form.senha.label() }}
+        {{ form.senha() }}
 
-</form>
+        {{ form.botao_confirmacao() }}
+
+    </form>
+    <a href="{{ url_for('criar_conta') }}">Registrar-se</a>
 
 </body>
 {% endblock %}
 {% endblock %}
+
 </html>

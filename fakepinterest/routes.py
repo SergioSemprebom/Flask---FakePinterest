@@ -3,9 +3,10 @@ from flask import Flask, render_template, url_for, redirect # importa o Flask, r
 from fakepinterest import app # importa o app do arquivo fakepinterest.py
 from fakepinterest.models import Usuario, Foto # importa o modelo Usuario do arquivo models.py
 from flask_login import login_required, login_user, logout_user, current_user # importa o login_required do flask_login
-from fakepinterest.forms import FormLogin, FormCriarConta# importa os formulários do arquivo forms.py
+from fakepinterest.forms import FormLogin, FormCriarConta, FormFoto# importa os formulários do arquivo forms.py
 from fakepinterest import database, bcrypt # importa o banco de dados e o bcrypt do arquivo fakepinterest.py
-
+import os # importa o os para manipular arquivos e diretórios
+from werkzeug.utils import secure_filename # importa o secure_filename do werkzeug para garantir que o nome do arquivo seja seguro
 
 #cria as rotas da aplicação
 @app.route('/', methods=["GET", "POST"]) # rota padrão
@@ -34,13 +35,24 @@ def criar_conta():
     
 
 
-@app.route("/perfil/<id_usuario>") # rota para o perfil
+@app.route("/perfil/<id_usuario>", methods=["GET", "POST"]) # rota para o perfil
 @login_required # verifica se o usuário está logado, se não estiver logado, redireciona para a página de login  
 def perfil(id_usuario):
      # busca o usuário no banco de dados pelo id
     if int(id_usuario) == int(current_user.id): # verifica se o usuário é o mesmo que está logado
         # o usuario está venfondo o perfil dele mesmo
-        return render_template("perfil.html", usuario=current_user) # renderiza o template perfil.html
+        form_foto = FormFoto()
+        if form_foto.validate_on_submit():
+            arquivo = form_foto.foto.data # pega o arquivo da foto
+            nome_seguro = secure_filename(arquivo.filename) # gera um nome seguro para o arquivo
+            caminho = os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                              app.config["UPLOAD_FOLDER"], nome_seguro) # cria o caminho para salvar o arquivo
+            arquivo.save(caminho) # salva o arquivo
+            foto = Foto(imagem=nome_seguro, id_usuario=current_user.id) # cria a foto
+            database.session.add(foto)
+            database.session.commit() # salva a foto no banco de dados
+            
+        return render_template("perfil.html", usuario=current_user, form=form_foto) # renderiza o template perfil.html
            # se o usuário não existe
     else:
         usuario = Usuario.query.get(int(id_usuario))
@@ -53,5 +65,9 @@ def logout():
     logout_user() # faz o logout do usuário
     return redirect(url_for("homepage")) # redireciona para a página de login
 
-
+@app.route("/feed") # rora para o feed
+@login_required # verifica se o usuario está logado
+def feed():
+    fotos = Foto.query.order_by(Foto.data_criacao.desc()).all() # busca todas as fotos no banco de dados
+    return render_template("feed.html", fotos=fotos) # renderiza o template feed.html com as fotos
 

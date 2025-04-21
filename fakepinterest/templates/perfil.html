@@ -4,20 +4,24 @@
 Perfil - {{usuario}}
 {% endblock %} <!--Fim do bloco de título-->
 
-
 {% block body %} <!--Início do bloco de corpo-->
 <body>
+{% include "navbar.html" %} <!--Inclui o template navbar.html-->
 
-<h1>Perfil do usuário: {{usuario}} </h1> <!--Exibe o nome do usuário-->
+<h1>Perfil do usuário: {{usuario.username}} </h1> <!--Exibe o nome do usuário-->
 
-<a href="{{url_for ('logout')}}">Sair</a> 
+{% if form %}
+<form method="POST" enctype="multipart/form-data">
+    {{ form.csrf_token }}
 
-<!--Link para voltar à página inicial--> 
+    {{ form.foto() }}
+    {{ form.botao_confirmacao() }}    
+</form>
+{% endif %}
 
-<img src="{{url_for('static', filename='/default.png') }}">
 
-{ % for foto in usuario.fotos %}
-
+{% for foto in usuario.fotos %}
+<img src="{{url_for('static', filename='fotos_posts/{}'.format(foto.imagem)) }}">
 {% endfor %}
 
 </body>   
