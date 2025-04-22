@@ -10,6 +10,11 @@ class FormLogin(FlaskForm):
     email=StringField("E-mail", validators=[DataRequired(), Email()])
     senha=PasswordField("Senha", validators=[DataRequired()])
     botao_confirmacao=SubmitField("Fazer login")
+
+    def validate_email(self, email):
+        usuario=Usuario.query.filter_by(email=email.data).first() # verifica se o email já existe no banco de dados
+        if not usuario:
+            raise ValidationError("E-mail não cadastrado, crie uma conta!" )    
     
 
 class FormCriarConta(FlaskForm):
@@ -22,7 +27,7 @@ class FormCriarConta(FlaskForm):
     def validate_email(self, email):
         usuario=Usuario.query.filter_by(email=email.data).first() # verifica se o email já existe no banco de dados
         if usuario:
-            raise ValidationError("E-mail já cadastrado, faça login para continuar" ) # se o email já existe, lança um erro de validação com a mensagem "E-mail já cadastrado, faça login para continuar"
+            raise ValidationError("E-mail já cadastrado, faça Login!" ) # se o email já existe, lança um erro de validação com a mensagem "E-mail já cadastrado, faça login para continuar"
         
 
 class FormFoto(FlaskForm):
