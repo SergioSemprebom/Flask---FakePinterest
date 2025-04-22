@@ -65,7 +65,7 @@
 
                 <div class="div-input">
                     {{ form.senha.label(class) }}
-                    {% if form.senha.errors %}
+                {% if form.senha.errors %}
                     {% for erro in form.senha.errors %}
                         <p style="color: red">{{ erro }}</p>
                     {% endfor %}
