@@ -3,12 +3,12 @@ from flask import Flask # importa o Flask e o render_template do flask
 from flask_sqlalchemy import SQLAlchemy # importa o SQLAlchemy do flask_sqlalchemy
 from flask_login import LoginManager # importa o LoginManager do flask_login
 from flask_bcrypt import Bcrypt # importa o Bcrypt do flask_bcrypt
-      
+import os # importa o os, para manipular arquivos e diretórios  
 
 
 app = Flask(__name__) # cria uma instância do Flask, __name__ é o nome do módulo atual
 # o Flask vai saber onde estão os arquivos estáticos, templates e etc.
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///comunidade.db' # configura o banco de dados, nesse caso, um sqlite
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL") # configura o banco de dados online, nesse caso, um sqlite
 app.config["SECRET_KEY"] = '245aec28c2caa1919373ab04652ad471' # chave secreta para proteger as sessões do Flask
 app.config['UPLOAD_FOLDER'] = 'static/fotos_posts' # pasta onde as fotos serão salvas
 
