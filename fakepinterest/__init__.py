@@ -1,21 +1,33 @@
-# criação do app
-from flask import Flask # importa o Flask e o render_template do flask 
-from flask_sqlalchemy import SQLAlchemy # importa o SQLAlchemy do flask_sqlalchemy
-from flask_login import LoginManager # importa o LoginManager do flask_login
-from flask_bcrypt import Bcrypt # importa o Bcrypt do flask_bcrypt
-import os # importa o os, para manipular arquivos e diretórios  
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+from flask_bcrypt import Bcrypt
+import os # Certifique-se que 'os' está importado
 
+app = Flask(__name__)
 
-app = Flask(__name__) # cria uma instância do Flask, __name__ é o nome do módulo atual
-# o Flask vai saber onde estão os arquivos estáticos, templates e etc.
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL") # configura o banco de dados online, nesse caso, um sqlite
-app.config["SECRET_KEY"] = '245aec28c2caa1919373ab04652ad471' # chave secreta para proteger as sessões do Flask
-app.config['UPLOAD_FOLDER'] = 'static/fotos_posts' # pasta onde as fotos serão salvas
+# Carrega a URL do banco de dados do ambiente
+database_url = os.getenv("DATABASE_URL")
+if not database_url:
+    raise ValueError("Variável de ambiente DATABASE_URL não definida.")
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 
-database = SQLAlchemy(app) # cria uma instância do SQLAlchemy, passando o app como parâmetro
-bcrypt = Bcrypt(app) # cria uma instância do Bcrypt, passando o app como parâmetro
-login_manager = LoginManager(app) # cria uma instância do LoginManager, passando o app como parâmetro
-login_manager.login_view = "homepage" # define a view de login, que será a homepage
+# Carrega a Chave Secreta do ambiente
+secret_key = os.getenv("SECRET_KEY")
+if not secret_key:
+    raise ValueError("Variável de ambiente SECRET_KEY não definida.")
+app.config["SECRET_KEY"] = secret_key
 
+app.config['UPLOAD_FOLDER'] = 'static/fotos_posts'
 
-from fakepinterest import routes # importa as rotas do arquivo routes.py
+database = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
+login_manager = LoginManager(app)
+login_manager.login_view = "homepage"
+
+# Importante: Faça o commit dessa alteração no seu repositório Git!
+# git add fakepinterest/__init__.py
+# git commit -m "Carrega SECRET_KEY a partir de variável de ambiente"
+# git push
+
+from fakepinterest import routes
